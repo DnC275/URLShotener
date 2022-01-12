@@ -1,0 +1,27 @@
+version: '3'
+services:
+#  web-app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8000:8000"
+#    links:
+#      - db
+
+  db:
+    container_name: postgres
+    image: postgres
+    environment:
+      - POSTGRES_DB=urlshortener
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - TZ=Europe/Moscow
+    ports:
+       - "5432:5432"
+    networks:
+      - urlshortener
+
+networks:
+  urlshortener:
+    name: urlshortener
