@@ -48,8 +48,8 @@
   При старте сервера можно задать параметр -storage, который указывает какой тип хранилища будет использовать сервис: in-memory или базу данных postgres.
   По умолчанию -storage=in-memory.
   
-    Если вы хотите использовать PostgreSQL, то необходимо передать -storage=postgres, после чего задать параметры db_host(хост базы данных), db_port(порт бд), db_user(юзера для доступа к бд), db_pwd(пароль от юзера) и db_name(имя существующей бд).
-Если не задать эти параметры, то будут использовны значения по умолчанию: db_host=127.0.0.1, db_port=5432, db_user=postgres, db_pwd=postgres, db_name=urlshortener.
+    Если вы хотите использовать PostgreSQL, то необходимо передать -storage=postgres, после чего задать параметры **db_host**(хост базы данных), **db_port**(порт бд), **db_user**(юзера для доступа к бд), **db_pwd**(пароль от юзера) и **db_name**(имя существующей бд).
+Если не задать эти параметры, то будут использовны значения по умолчанию: **db_host**=127.0.0.1, **db_port**=5432, **db_user**=postgres, **db_pwd**=postgres, **db_name**=urlshortener.
 Значения по умолчания можно поменять, изменив значения в файле .env
     #### Примеры:
     для использования in-memory хранилища:
@@ -63,6 +63,19 @@
     * ```shell
       git clone https://github.com/DnC275/URLShotener/tree/master
     * ```shell
-      docker-compose up
+      docker build -t myapp .
+    * ```shell
+      docker run -p 8000:8000 myapp [arg1=..., arg2=...,]
+      ```
+    Для развертывания PostgresSQL можно воспользоваться моим docker-compose файлом:
+    ```shell
+  docker-compose up
+  ```
+    В этом случае, при запуске сервиса через docker, необходимо указать сеть и поменять хост базы данных на postgres:
+  ```shell
+  docker run -p 8000:8000 --net urlshortener myapp -storage postgres -db_host=postgres
+  ```
+  Также вы можете использовать докер образ с моего dockerhub: dnc275/urlshortener:1.0
+      
     
   

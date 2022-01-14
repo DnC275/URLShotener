@@ -248,6 +248,7 @@ func makeInit(dbHost, dbPort, dbUser, dbPassword, dbName string) {
 			}
 		}
 	} else {
+		fmt.Println(fmt.Sprint(storage))
 		urlsRelationArr = []UrlsRelation{}
 	}
 }
@@ -267,6 +268,7 @@ func main() {
 	flag.StringVar(&dbName, "db_name", os.Getenv("DB_NAME"), "Database name")
 	flag.Parse()
 
+	fmt.Println(s)
 	if s == "in-memory" {
 		storage = InMemory
 	} else if s == "postgres" {
