@@ -35,10 +35,10 @@ type MyError struct {
 	ErrorMessage string      `json:"error_message,omitempty"`
 }
 
-type Storage int
+type StorageType int
 
 const (
-	InMemory Storage = iota + 1
+	InMemory StorageType = iota + 1
 	Postgres
 )
 
@@ -53,12 +53,20 @@ const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_012345
 
 var db *sql.DB
 var err error
-var storage Storage
+var storage StorageType
 var urlsRelationArr []UrlsRelation
 
 func (s UrlType) String() string {
 	types := [...]string{"shortUrlID", "id"}
 	if s < Short || s > Long {
+		return fmt.Sprintf("UrlType(%d)", int(s))
+	}
+	return types[s-1]
+}
+
+func (s StorageType) String() string {
+	types := [...]string{"In-Memory", "PostgreSQL"}
+	if s < InMemory || s > Postgres {
 		return fmt.Sprintf("UrlType(%d)", int(s))
 	}
 	return types[s-1]
@@ -220,9 +228,8 @@ func CreateEndpoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func makeInit(dbHost, dbPort, dbUser, dbPassword, dbName string) {
+	log.Printf("Using storage type: %s", fmt.Sprint(storage))
 	if storage == Postgres {
-		fmt.Println(dbHost, dbPort, dbName)
-		fmt.Println(fmt.Sprint(storage))
 		connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 			dbHost,
 			dbPort,
@@ -248,7 +255,6 @@ func makeInit(dbHost, dbPort, dbUser, dbPassword, dbName string) {
 			}
 		}
 	} else {
-		fmt.Println(fmt.Sprint(storage))
 		urlsRelationArr = []UrlsRelation{}
 	}
 }
@@ -268,7 +274,6 @@ func main() {
 	flag.StringVar(&dbName, "db_name", os.Getenv("DB_NAME"), "Database name")
 	flag.Parse()
 
-	fmt.Println(s)
 	if s == "in-memory" {
 		storage = InMemory
 	} else if s == "postgres" {
