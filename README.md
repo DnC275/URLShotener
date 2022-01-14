@@ -75,7 +75,7 @@
   ```shell
   docker run -p 8000:8000 --net urlshortener myapp -storage postgres -db_host=postgres
   ```
-  Также вы можете использовать докер образ с моего dockerhub: dnc275/urlshortener:1.0
+  Также вы можете использовать докер образ с моего dockerhub: dnc275/urlshortener:latest
       
     
   
